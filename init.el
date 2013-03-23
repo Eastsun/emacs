@@ -11,7 +11,7 @@
 (setq package-archives '(
    ("gnu" . "http://elpa.gnu.org/packages/") 
    ("melpa" . "http://melpa.milkbox.net/packages/")
-   ("ess" . "http://kieranhealy.org/packages/")
+   ("marmalade" . "http://marmalade-repo.org/packages/")
    ))
 (package-initialize)
 
@@ -81,8 +81,10 @@
    (TeX-current-line) (buffer-file-name)
    "\""))
 (add-hook 'LaTeX-mode-hook '(lambda ()
-			      (add-to-list 'TeX-expand-list
-(require 'ac-math)					   '("%u" okular-make-url))))
+			      (add-to-list 'TeX-expand-list '("%u" okular-make-url))
+))
+
+(require 'ac-math)					   
 (add-hook 'LaTeX-mode-hook
   (lambda ()
     (setq ac-sources '(ac-source-math-latex ac-source-latex-commands ac-source-yasnippet))
