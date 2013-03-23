@@ -1,0 +1,55 @@
+# -*- mode: snippet -*-
+# contributor: Mads D. Kristensen <madsdk@gmail.com>
+# contributor : Song Qiang <tsiangsung@gmail.com>
+# key: cjkdocument
+# group: skeleton
+# name: \begin{CJK}{GBK}{song} ...
+# --
+\documentclass[a4paper,11pt]{article}
+\usepackage{CJK}
+
+\usepackage{color}
+\usepackage{fourier}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumerate}
+\usepackage{booktabs}
+
+\usepackage{indentfirst}
+
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\supp}{supp}
+
+
+\begin{document}
+\begin{CJK}{GBK}{song}
+\allowdisplaybreaks
+\theoremstyle{definition}
+\newtheorem{defi}{定义}
+\newtheorem{thm}{定理}
+\newtheorem*{prob}{问题}
+\newtheorem{lemma}{引理}
+\newtheorem{prop}[thm]{性质}
+\newtheorem{coro}[thm]{推论}
+\newtheorem{exam}[thm]{例}
+\numberwithin{equation}{section}
+
+\newcommand\bbZ{\mathbb{Z}}
+\newcommand\bbR{\mathbb{R}}
+\newcommand\bbQ{\mathbb{Q}}
+\newcommand\bbS{\mathcal{S}}
+\newcommand\bbH{\mathcal{H}}
+
+
+\setlength{\parindent}{2em}
+
+\title{${1:title}}
+\author{孙旭东}
+
+$0
+
+\end{CJK}
+\end{document}
