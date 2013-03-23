@@ -1,5 +1,5 @@
 ;; Emacs configuration all in one file
-;; Version: 0.1
+;; Version: 0.11
 ;; Author: Eastsun
 ;; Date: 2013-03-24
 ;--------------------pre defined variable ------------------
