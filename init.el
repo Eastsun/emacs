@@ -3,9 +3,20 @@
 ;; Author: Eastsun
 ;; Date: 2013-03-24
 ;--------------------pre defined variable ------------------
+;; Set ensime-root-dir to "" if you don't use ensime
 (defvar ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
+;; The full path of okular in windows
 (defvar win-path-to-okular "F:/KDE/bin/okular.exe")
+;; The full path of RTemin in windows
 (defvar win-path-to-r "")
+
+;;----Set my-python-on to 1 and install related packages manual if want to use python ---
+(defvar my-python-on 1)
+
+; for linux
+;<sudo easy_install pip>
+;sudo pip install jedi
+;sudo pip install epc
 ;%%%%%%%%%%%%%%%%%%%%%% init & install packages if needed %%%%%%%%%%%%%%%%%%%%
 (require 'package)
 (setq package-archives '(
@@ -17,7 +28,7 @@
 
 (when (not package-archive-contents) (package-refresh-contents))
 (defvar my-packages 
-  '(ac-math ess auctex python yasnippet auto-complete tabbar scala-mode2 magit)
+  '(ac-math autopair ess auctex python yasnippet auto-complete tabbar scala-mode2 magit)
   "A list of packages to ensure are installed at launch."
 )
 
@@ -25,6 +36,16 @@
   (when (not (package-installed-p p))
     (package-install p)
   ))
+
+;;;;;;;;;;python ;;;;;;;;;;;;;;;;
+(when my-python-on
+  (unless (package-installed-p 'jedi)
+    (package-refresh-contents) (package-install 'jedi))
+  (autoload 'jedi:setup "jedi" nil t)
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:server-args
+      '("--sys-path" "/usr/lib/python2.7/dist-packages"))
+)
 
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,9 +64,11 @@
  '(frame-title-format " sun@ %f")
  '(show-paren-mode t)
  '(global-linum-mode t)
+;'(global-hl-line-mode t)
  '(linum-format "%3d")
 )
 (set-face-foreground 'linum "white")
+;(set-face-background 'hl-line "#749")
 (add-to-list 'load-path "~/.emacs.d/")
 (cond ((eq system-type 'windows-nt)
        (set-default-font "Consolas-11")
@@ -146,3 +169,6 @@
 (require 'ess-site)
 ;-----------magit-------------
 (require 'magit)
+;-------autopair---
+(require 'autopair)
+(autopair-global-mode)
