@@ -158,7 +158,7 @@
 )
 
 (cond ((eq system-type 'windows-nt) (defvar ensime-root-dir win-ensime-root-dir))
-      ((eq system-type 'gnu/linux) (defvar ensime-root-dir win-ensime-root-dir)))
+      ((eq system-type 'gnu/linux) (defvar ensime-root-dir gnu-ensime-root-dir)))
        
 (when (not (string-equal ensime-root-dir ""))
       (add-to-list 'load-path (concat ensime-root-dir "/elisp/"))
