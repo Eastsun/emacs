@@ -11,14 +11,18 @@
 ;; The full path of RTemin in windows
 (defvar win-path-to-r "F:/Math/R-2.15.3/bin/i386/Rterm.exe")
 
-;;----Set my-python-on to 1 and install related packages manual if want to use python ---
-(defvar my-python-on 1)
-
+;; The directory of numpy packages
+;; You cant get it from
+; import os; import numpy; print(os.path.dirname(os.path.dirname(numpy.__file__)))
+(defconst win-numpy-root-dir "")
+(defconst gnu-numpy-root-dir "/usr/lib/python2.7/dist-packages")
+;;----install related packages manual if want to use python ---
 ; for linux
 ;<sudo easy_install pip>
 ;sudo pip install jedi
 ;sudo pip install epc
 ;%%%%%%%%%%%%%%%%%%%%%% init & install packages if needed %%%%%%%%%%%%%%%%%%%%
+(setq debug-on-error t)
 (require 'package)
 (setq package-archives '(
    ("gnu" . "http://elpa.gnu.org/packages/") 
@@ -39,12 +43,15 @@
   ))
 
 ;;;;;;;;;;python ;;;;;;;;;;;;;;;;
-(when my-python-on
-  (unless (package-installed-p 'jedi)
-    (package-refresh-contents) (package-install 'jedi))
-  (autoload 'jedi:setup "jedi" nil t)
-  (add-hook 'python-mode-hook 'jedi:setup)
-)
+(cond ((eq system-type 'windows-nt) (defconst numpy-root-dir win-numpy-root-dir))
+      ((eq system-type 'gnu/linux) (defconst numpy-root-dir gnu-numpy-root-dir)))
+
+(when (not (string-equal numpy-root-dir ""))
+      (unless (package-installed-p 'jedi) (package-refresh-contents) (package-install 'jedi))
+      (autoload 'jedi:setup "jedi" nil t)
+      (setq jedi:complete-on-dot t)
+      (add-hook 'python-mode-hook 'jedi:setup)
+      (setq jedi:server-args '("--sys-path" "/usr/lib/python2.7/dist-packages")))
 
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -93,7 +100,7 @@
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
-(add-to-list 'ac-modes 'latex-mode)
+(add-to-list 'ac-modes 'latex-mode 'python-mode)
 ;-----auctex--------
 (defun okular-make-url () 
   (concat
