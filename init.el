@@ -3,12 +3,13 @@
 ;; Author: Eastsun
 ;; Date: 2013-03-24
 ;--------------------pre defined variable ------------------
-;; Set ensime-root-dir to "" if you don't use ensime
-(defvar ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
+;; Set gnu-ensime-root-dir to "" if you don't use ensime
+(defvar gnu-ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
+(defvar win-ensime-root-dir "F:/Dev/ensime_2.10.0-0.9.8.9")
 ;; The full path of okular in windows
 (defvar win-path-to-okular "F:/KDE/bin/okular.exe")
 ;; The full path of RTemin in windows
-(defvar win-path-to-r "")
+(defvar win-path-to-r "F:/Math/R-2.15.3/bin/i386/Rterm.exe")
 
 ;;----Set my-python-on to 1 and install related packages manual if want to use python ---
 (defvar my-python-on 1)
@@ -43,8 +44,6 @@
     (package-refresh-contents) (package-install 'jedi))
   (autoload 'jedi:setup "jedi" nil t)
   (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:server-args
-      '("--sys-path" "/usr/lib/python2.7/dist-packages"))
 )
 
 (server-start)
@@ -80,6 +79,7 @@
 			 'bopomofo '("Microsoft Yahei" . "unicode-bmp"))
        (set-fontset-font (frame-parameter nil 'font)
 			 'gb18030 '("Microsoft Yahei". "unicode-bmp"))
+       (when (not (string-equal win-path-to-r "")) (setq inferior-R-program-name win-path-to-r))
 ))
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Packages' configurations%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;------tabbar-------
@@ -157,15 +157,15 @@
   )
 )
 
+(cond ((eq system-type 'windows-nt) (defvar ensime-root-dir win-ensime-root-dir))
+      ((eq system-type 'gnu/linux) (defvar ensime-root-dir win-ensime-root-dir)))
+       
 (when (not (string-equal ensime-root-dir ""))
-  (add-to-list 'load-path (concat ensime-root-dir "/elisp/"))
-  (require 'ensime)
-  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-)
+      (add-to-list 'load-path (concat ensime-root-dir "/elisp/"))
+      (require 'ensime)
+      (add-hook 'scala-mode-hook 'ensime-scala-mode-hook))
+
 ;------------ess --------------
-(when (not (string-equal win-path-to-r ""))
-  (setq inferior-R-program-name win-path-to-r)
-)
 (require 'ess-site)
 ;-----------magit-------------
 (require 'magit)
