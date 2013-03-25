@@ -14,7 +14,7 @@
 ;; The directory of numpy packages
 ;; You cant get it from
 ; import os; import numpy; print(os.path.dirname(os.path.dirname(numpy.__file__)))
-(defconst win-numpy-root-dir "F:/Python27/Lib/site-packages")
+(defconst win-numpy-root-dir "F:/Python26/Lib/site-packages")
 (defconst gnu-numpy-root-dir "/usr/lib/python2.7/dist-packages")
 ;;----install related packages manual if want to use python ---
 ; for linux
@@ -55,36 +55,34 @@
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
+ '(TeX-PDF-mode t)
  '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(custom-enabled-themes (quote (tango-dark)))
- '(preview-gs-options (quote ("-q" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")))
- '(tool-bar-mode nil)
- '(menu-bar-mode nil)
- '(gnus-inhibit-startup-message t)
- '(inhibit-startup-message t)
  '(auto-image-file-mode t)
- '(make-backup-files nil)
- '(x-select-enable-clipboard t)
- '(frame-title-format " sun@ %f")
- '(show-paren-mode t)
+ '(custom-enabled-themes (quote (tango-dark)))
+ '(frame-title-format " sun@ %f" t)
  '(global-linum-mode t)
-;'(global-hl-line-mode t)
+ '(gnus-inhibit-startup-message t)
+ '(inhibit-startup-screen t)
  '(linum-format "%3d")
-)
+ '(make-backup-files nil)
+ '(menu-bar-mode nil)
+ '(preview-gs-options (quote ("-q" "-dNOPAUSE" "-DNOPLATFONTS" "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4")))
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
+ '(x-select-enable-clipboard t))
 (set-face-foreground 'linum "white")
-;(set-face-background 'hl-line "#749")
 (add-to-list 'load-path "~/.emacs.d/")
 (cond ((eq system-type 'windows-nt)
        (set-default-font "Consolas-11")
-       (set-fontset-font (frame-parameter nil 'font)
-			 'han '("Microsoft YaHei" . "unicode-bmp"))
-       (set-fontset-font (frame-parameter nil 'font)
-			 'cjk-misc '("Microsoft Yahei" . "unicode-bmp"))
-       (set-fontset-font (frame-parameter nil 'font)
-			 'bopomofo '("Microsoft Yahei" . "unicode-bmp"))
-       (set-fontset-font (frame-parameter nil 'font)
-			 'gb18030 '("Microsoft Yahei". "unicode-bmp"))
+       (set-fontset-font (frame-parameter nil 'font) 'han '("Microsoft YaHei" . "unicode-bmp"))
+       (set-fontset-font (frame-parameter nil 'font) 'cjk-misc '("Microsoft Yahei" . "unicode-bmp"))
+       (set-fontset-font (frame-parameter nil 'font) 'bopomofo '("Microsoft Yahei" . "unicode-bmp"))
+       (set-fontset-font (frame-parameter nil 'font) 'gb18030 '("Microsoft Yahei". "unicode-bmp"))
        (when (not (string-equal win-path-to-r "")) (setq inferior-R-program-name win-path-to-r))
 ))
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Packages' configurations%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,20 +102,15 @@
 (defun okular-make-url () 
   (concat
    "\"file://"
-   (expand-file-name (funcall file "pdf" t)
-		     (file-name-directory (TeX-master-file)))
+   (expand-file-name (funcall file "pdf" t) (file-name-directory (TeX-master-file)))
    "#src:"
-   (TeX-current-line) (buffer-file-name)
-   "\""))
-(add-hook 'LaTeX-mode-hook '(lambda ()
-			      (add-to-list 'TeX-expand-list '("%u" okular-make-url))
-))
+   (TeX-current-line) (buffer-file-name) "\""))
+
+(add-hook 'LaTeX-mode-hook '(lambda ()  (add-to-list 'TeX-expand-list '("%u" okular-make-url))))
 
 (require 'ac-math)					   
 (add-hook 'LaTeX-mode-hook
-  (lambda ()
-    (setq ac-sources '(ac-source-math-latex ac-source-latex-commands ac-source-yasnippet))
-  )
+  (lambda () (setq ac-sources '(ac-source-math-latex ac-source-latex-commands ac-source-yasnippet)))
 )
 
 (setq reftex-plug-into-AUCTeX t)     ;;RefTex
