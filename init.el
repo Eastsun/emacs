@@ -1,20 +1,20 @@
 ;; Emacs configuration all in one file
-;; Version: 0.11
+;; Version: 0.12
 ;; Author: Eastsun
-;; Date: 2013-03-24
+;; Date: 2013-03-25
 ;--------------------pre defined variable ------------------
 ;; Set gnu-ensime-root-dir to "" if you don't use ensime
-(defvar gnu-ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
-(defvar win-ensime-root-dir "F:/Dev/ensime_2.10.0-0.9.8.9")
+(defconst gnu-ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
+(defconst win-ensime-root-dir "F:/Dev/ensime_2.10.0-0.9.8.9")
 ;; The full path of okular in windows
-(defvar win-path-to-okular "F:/KDE/bin/okular.exe")
+(defconst win-path-to-okular "F:/KDE/bin/okular.exe")
 ;; The full path of RTemin in windows
-(defvar win-path-to-r "F:/Math/R-2.15.3/bin/i386/Rterm.exe")
+(defconst win-path-to-r "F:/Math/R-2.15.3/bin/x64/Rterm.exe")
 
 ;; The directory of numpy packages
 ;; You cant get it from
 ; import os; import numpy; print(os.path.dirname(os.path.dirname(numpy.__file__)))
-(defconst win-numpy-root-dir "")
+(defconst win-numpy-root-dir "F:/Python27/Lib/site-packages")
 (defconst gnu-numpy-root-dir "/usr/lib/python2.7/dist-packages")
 ;;----install related packages manual if want to use python ---
 ; for linux
@@ -43,15 +43,14 @@
   ))
 
 ;;;;;;;;;;python ;;;;;;;;;;;;;;;;
-(cond ((eq system-type 'windows-nt) (defconst numpy-root-dir win-numpy-root-dir))
-      ((eq system-type 'gnu/linux) (defconst numpy-root-dir gnu-numpy-root-dir)))
+(defconst numpy-root-dir (if (eq system-type 'windows-nt) win-numpy-root-dir gnu-numpy-root-dir))
 
 (when (not (string-equal numpy-root-dir ""))
       (unless (package-installed-p 'jedi) (package-refresh-contents) (package-install 'jedi))
       (autoload 'jedi:setup "jedi" nil t)
       (setq jedi:complete-on-dot t)
       (add-hook 'python-mode-hook 'jedi:setup)
-      (setq jedi:server-args '("--sys-path" "/usr/lib/python2.7/dist-packages")))
+      (setq jedi:server-args `("--sys-path", numpy-root-dir)))
 
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,15 +138,18 @@
 )
 
 (cond ((eq system-type 'windows-nt)
-       (setq TeX-command-list
-	     '(("TeX" "tex --src \"\\nonstopmode\\input %t\"" TeX-run-TeX nil t)
-	       ("LaTeX" "%l --src \"\\nonstopmode\\input{%t}\"" TeX-run-LaTeX nil t)
-	       ("View" "yap -1  -s %n%b %d" TeX-run-discard nil nil)
-	       ("SView" (concat win-path-to-okular " --unique %o") TeX-run-discard nil nil)
-	       ("PView" "start \"\" %s.pdf" TeX-run-command nil t)
-	       ("BibTeX" "bibtex %s" TeX-run-BibTeX nil nil)
-	       ("Index" "makeindex %s" TeX-run-command nil t)
-	       )))
+       ;(setq TeX-command-list
+	;     `(("TeX" "tex --src \"\\nonstopmode\\input %t\"" TeX-run-TeX nil t)
+	;       ("LaTeX" "%l --src \"\\nonstopmode\\input{%t}\"" TeX-run-LaTeX nil t)
+	;       ("View" "yap -1  -s %n%b %d" TeX-run-discard nil nil)
+	;       ("SView" ,(concat win-path-to-okular " --unique %o") TeX-run-discard nil nil)
+	;       ("PView" "start \"\" %s.pdf" TeX-run-command nil t)
+	;       ("BibTeX" "bibtex %s" TeX-run-BibTeX nil nil)
+	;       ("Index" "makeindex %s" TeX-run-command nil t)
+	;       )))
+       (setq TeX-view-program-list `(("Okular" ,(concat win-path-to-okular " --unique %u") TeX-run-command nil t)
+                                     ("Yap" "yap -1  -s %n%b %d" TeX-run-command nil t)))
+       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Yap"))))
       ((eq system-type 'gnu/linux)
        (setq TeX-view-program-list '(("Okular" "okular --unique %u" TeX-run-command nil t)))
        (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))
@@ -164,8 +166,7 @@
   )
 )
 
-(cond ((eq system-type 'windows-nt) (defvar ensime-root-dir win-ensime-root-dir))
-      ((eq system-type 'gnu/linux) (defvar ensime-root-dir gnu-ensime-root-dir)))
+(defconst ensime-root-dir (if (eq system-type 'windows-nt) win-ensime-root-dir gnu-ensime-root-dir))
        
 (when (not (string-equal ensime-root-dir ""))
       (add-to-list 'load-path (concat ensime-root-dir "/elisp/"))
