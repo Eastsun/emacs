@@ -3,7 +3,7 @@
 ;; Author: Eastsun
 ;; Date: 2013-03-25
 ;--------------------pre defined variable ------------------
-;; Set it to "" if you don't wan proxy
+;; Set it to "" if you don't want proxy
 (defconst http-proxy-address "127.0.0.1:8087")
 ;; Set gnu-ensime-root-dir to "" if you don't use ensime
 (defconst gnu-ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
@@ -131,15 +131,6 @@
 )
 
 (cond ((eq system-type 'windows-nt)
-       ;(setq TeX-command-list
-	;     `(("TeX" "tex --src \"\\nonstopmode\\input %t\"" TeX-run-TeX nil t)
-	;       ("LaTeX" "%l --src \"\\nonstopmode\\input{%t}\"" TeX-run-LaTeX nil t)
-	;       ("View" "yap -1  -s %n%b %d" TeX-run-discard nil nil)
-	;       ("SView" ,(concat win-path-to-okular " --unique %o") TeX-run-discard nil nil)
-	;       ("PView" "start \"\" %s.pdf" TeX-run-command nil t)
-	;       ("BibTeX" "bibtex %s" TeX-run-BibTeX nil nil)
-	;       ("Index" "makeindex %s" TeX-run-command nil t)
-	;       )))
        (setq TeX-view-program-list `(("Okular" ,(concat win-path-to-okular " --unique %u") TeX-run-command nil t)
                                      ("Yap" "yap -1  -s %n%b %d" TeX-run-command nil t)))
        (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Yap"))))
