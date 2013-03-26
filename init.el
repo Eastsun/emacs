@@ -15,13 +15,16 @@
 ;; The directory of numpy packages
 ;; You cant get it from
 ; import os; import numpy; print(os.path.dirname(os.path.dirname(numpy.__file__)))
-(defconst win-numpy-root-dir "F:/Python26/Lib/site-packages")
+(defconst win-numpy-root-dir "F:/Python27/Lib/site-packages")
 (defconst gnu-numpy-root-dir "/usr/lib/python2.7/dist-packages")
+;; The directory where python installed
+(defconst win-python-root-dir "F:/Python27")
 ;;----install related packages manual if want to use python ---
 ; for linux
 ;<sudo easy_install pip>
 ;sudo pip install jedi
 ;sudo pip install epc
+;install ipython
 ;%%%%%%%%%%%%%%%%%%%%%% init & install packages if needed %%%%%%%%%%%%%%%%%%%%
 (when (not (string-equal http-proxy-address ""))
   (setq url-using-proxy t)
@@ -52,10 +55,22 @@
 
 (when (not (string-equal numpy-root-dir ""))
       (unless (package-installed-p 'jedi) (package-refresh-contents) (package-install 'jedi))
+      ;(unless (package-installed-p 'ein) (package-refresh-contents) (package-install 'ein))
       (autoload 'jedi:setup "jedi" nil t)
       (setq jedi:complete-on-dot t)
       (add-hook 'python-mode-hook 'jedi:setup)
-      (setq jedi:server-args `("--sys-path", numpy-root-dir)))
+      (setq jedi:server-args `("--sys-path", numpy-root-dir))
+
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args ""
+        python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+        python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+        python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
+        python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
+        python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+  (when (eq system-type 'windows-nt)
+        (setq python-shell-interpreter (concat win-python-root-dir "/python.exe")
+              python-shell-interpreter-args (concat "-i " win-python-root-dir "/Scripts/ipython-script.py"))))
 
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
