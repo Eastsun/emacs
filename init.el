@@ -3,6 +3,8 @@
 ;; Author: Eastsun
 ;; Date: 2013-03-25
 ;--------------------pre defined variable ------------------
+;; Set it to "" if you don't wan proxy
+(defconst http-proxy-address "127.0.0.1:8087")
 ;; Set gnu-ensime-root-dir to "" if you don't use ensime
 (defconst gnu-ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
 (defconst win-ensime-root-dir "F:/Dev/ensime_2.10.0-0.9.8.9")
@@ -10,7 +12,6 @@
 (defconst win-path-to-okular "F:/KDE/bin/okular.exe")
 ;; The full path of RTemin in windows
 (defconst win-path-to-r "F:/Math/R-2.15.3/bin/x64/Rterm.exe")
-
 ;; The directory of numpy packages
 ;; You cant get it from
 ; import os; import numpy; print(os.path.dirname(os.path.dirname(numpy.__file__)))
@@ -22,7 +23,11 @@
 ;sudo pip install jedi
 ;sudo pip install epc
 ;%%%%%%%%%%%%%%%%%%%%%% init & install packages if needed %%%%%%%%%%%%%%%%%%%%
-(setq debug-on-error t)
+(when (not (string-equal http-proxy-address ""))
+  (setq url-using-proxy t)
+  (setq url-proxy-services  `(("http" . ,http-proxy-address)))
+)
+
 (require 'package)
 (setq package-archives '(
    ("gnu" . "http://elpa.gnu.org/packages/") 
@@ -55,12 +60,7 @@
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(LaTeX-command "latex -synctex=1")
- '(TeX-PDF-mode t)
  '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
  '(auto-image-file-mode t)
  '(custom-enabled-themes (quote (tango-dark)))
