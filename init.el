@@ -75,7 +75,6 @@
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 (custom-set-variables
- '(LaTeX-command "latex -synctex=1")
  '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
  '(auto-image-file-mode t)
  '(custom-enabled-themes (quote (tango-dark)))
@@ -137,6 +136,7 @@
 (setq preview-auto-cache-preamble nil)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
+(setq LaTeX-command "latex -synctex=1")
 (setq-default TeX-master nil)
 (add-hook 'LaTeX-mode-hook 
   (lambda () 
@@ -148,7 +148,9 @@
 (cond ((eq system-type 'windows-nt)
        (setq TeX-view-program-list `(("Okular" ,(concat win-path-to-okular " --unique %u") TeX-run-command nil t)
                                      ("Yap" "yap -1  -s %n%b %d" TeX-run-command nil t)))
-       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Yap"))))
+       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Yap")))
+       (setq TeX-source-correlate-mode 1 )
+       (setq TeX-source-correlate-method 'source-specials))
       ((eq system-type 'gnu/linux)
        (setq TeX-view-program-list '(("Okular" "okular --unique %u" TeX-run-command nil t)))
        (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))
