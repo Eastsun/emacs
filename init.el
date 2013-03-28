@@ -138,23 +138,20 @@
 (setq TeX-parse-self t)
 (setq LaTeX-command "latex -synctex=1")
 (setq-default TeX-master nil)
+(setq TeX-source-correlate-mode 1 )
+(setq TeX-source-correlate-method 'source-specials)
 (add-hook 'LaTeX-mode-hook 
   (lambda () 
     (TeX-PDF-mode t)
-    (setq TeX-save-query nil) 
-  )
-)
+    (setq TeX-save-query nil)))
 
 (cond ((eq system-type 'windows-nt)
        (setq TeX-view-program-list `(("Okular" ,(concat win-path-to-okular " --unique %u") TeX-run-command nil t)
                                      ("Yap" "yap -1  -s %n%b %d" TeX-run-command nil t)))
-       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Yap")))
-       (setq TeX-source-correlate-mode 1 )
-       (setq TeX-source-correlate-method 'source-specials))
+       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Yap"))))
       ((eq system-type 'gnu/linux)
        (setq TeX-view-program-list '(("Okular" "okular --unique %u" TeX-run-command nil t)))
-       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))
-       ))
+       (setq TeX-view-program-selection '((output-pdf "Okular") (output-dvi "Okular")))))
 ;---------- scala --------------
 (add-hook 'scala-mode-hook
   (lambda ()
