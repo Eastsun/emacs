@@ -53,9 +53,10 @@
 ;;;;;;;;;;python ;;;;;;;;;;;;;;;;
 (defconst numpy-root-dir (if (eq system-type 'windows-nt) win-numpy-root-dir gnu-numpy-root-dir))
 
+(add-hook 'python-mode-hook
+  (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (when (not (string-equal numpy-root-dir ""))
       (unless (package-installed-p 'jedi) (package-refresh-contents) (package-install 'jedi))
-      ;(unless (package-installed-p 'ein) (package-refresh-contents) (package-install 'ein))
       (autoload 'jedi:setup "jedi" nil t)
       (setq jedi:complete-on-dot t)
       (add-hook 'python-mode-hook 'jedi:setup)
