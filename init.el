@@ -3,8 +3,8 @@
 ;; Author: Eastsun
 ;; Date: 2013-03-25
 ;--------------------pre defined variable ------------------
-;; Set it to "" if you don't want proxy
-(defconst http-proxy-address "127.0.0.1:8087")
+;; Set it to "" if you don't use proxy
+(defconst http-proxy-address "")
 ;; Set gnu-ensime-root-dir to "" if you don't use ensime
 (defconst gnu-ensime-root-dir "/home/future/dev/ensime_2.10.0-0.9.8.9")
 (defconst win-ensime-root-dir "F:/Dev/ensime_2.10.0-0.9.8.9")
@@ -41,7 +41,7 @@
 
 (when (not package-archive-contents) (package-refresh-contents))
 (defvar my-packages 
-  '(ac-math autopair ess auctex python yasnippet auto-complete tabbar scala-mode2 magit)
+  '(ac-math autopair ess auctex yasnippet auto-complete tabbar scala-mode2 magit)
   "A list of packages to ensure are installed at launch."
 )
 
