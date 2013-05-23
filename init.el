@@ -17,7 +17,7 @@
 ; import os; import numpy; print(os.path.dirname(os.path.dirname(numpy.__file__)))
 (defconst win-numpy-root-dir "C:/Program Files/Enthought/Canopy/App/appdata/canopy-1.0.0.1160.win-x86_64/lib/site-packages")
 (defconst gnu-numpy-root-dir "/usr/lib/python2.7/dist-packages")
-;; The directory where python installed
+;; The directory where ipython installed
 (defconst win-ipython-root-dir "C:/Program Files/Enthought/Canopy/App/appdata/canopy-1.0.0.1160.win-x86_64/Scripts")
 ;;----install related packages manual if want to use python ---
 ; for linux
@@ -69,6 +69,7 @@
         python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
         python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
         python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
   (when (and (eq system-type 'windows-nt) (not (eq win-ipython-root-dir "")))
         (setq python-shell-interpreter "python.exe"
               python-shell-interpreter-args (concat "-i \"" win-ipython-root-dir  "/ipython-script.py" "\""))))
