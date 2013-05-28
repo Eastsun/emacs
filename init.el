@@ -57,10 +57,34 @@
   (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
 (when (not (string-equal numpy-root-dir ""))
       (unless (package-installed-p 'jedi) (package-refresh-contents) (package-install 'jedi))
-      (autoload 'jedi:setup "jedi" nil t)
+
       (setq jedi:complete-on-dot t)
+      (setq jedi:setup-keys nil)
+      (setq jedi:tooltip-method nil)
+      (autoload 'jedi:setup "jedi" nil t)
       (add-hook 'python-mode-hook 'jedi:setup)
       (setq jedi:server-args `("--sys-path", numpy-root-dir))
+	    
+      (defvar jedi:goto-stack '())
+      (defun jedi:jump-to-definition ()
+	(interactive)
+	(add-to-list 'jedi:goto-stack
+		     (list (buffer-name) (point)))
+	(jedi:goto-definition)
+      )
+      (defun jedi:jump-back ()
+	(interactive)
+	(let ((p (pop jedi:goto-stack)))
+	  (if p (progn
+		  (switch-to-buffer (nth 0 p))
+		  (goto-char (nth 1 p)))))
+      )
+      ;; redefine jedi's C-. (jedi:goto-definition)
+      ;; to remember position, and set C-, to jump back
+      (add-hook 'python-mode-hook
+          (lambda ()
+             (local-set-key (kbd "M-.") 'jedi:jump-to-definition)
+             (local-set-key (kbd "M-,") 'jedi:jump-back)))
 
   (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args ""
@@ -72,7 +96,8 @@
 
   (when (and (eq system-type 'windows-nt) (not (eq win-ipython-root-dir "")))
         (setq python-shell-interpreter "python.exe"
-              python-shell-interpreter-args (concat "-i \"" win-ipython-root-dir  "/ipython-script.py" "\""))))
+              python-shell-interpreter-args (concat "-i \"" win-ipython-root-dir  "/ipython-script.py" "\"")))
+)
 
 (server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
