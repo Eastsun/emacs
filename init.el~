@@ -1,7 +1,7 @@
 ;; Emacs configuration all in one file
-;; Version: 0.5
+;; Version: 0.12
 ;; Author: Eastsun
-;; Date: 2013-06-01
+;; Date: 2013-03-25
 ;--------------------pre defined variable ------------------
 ;; Set it to "" if you don't use proxy
 (defconst http-proxy-address "")
@@ -99,9 +99,7 @@
               python-shell-interpreter-args (concat "-i \"" win-ipython-root-dir  "/ipython-script.py" "\"")))
 )
 
-(require 'server)
-(or (server-running-p)
-    (server-start))
+(server-start)
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%Custom Setting%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 (custom-set-variables
  '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
