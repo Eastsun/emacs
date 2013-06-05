@@ -41,7 +41,7 @@
 
 (when (not package-archive-contents) (package-refresh-contents))
 (defvar my-packages 
-  '(ac-math autopair ess auctex yasnippet auto-complete tabbar scala-mode2 magit)
+  '(ac-math autopair ess auctex yasnippet auto-complete tabbar scala-mode2 magit csv-mode)
   "A list of packages to ensure are installed at launch."
 )
 
