@@ -41,7 +41,7 @@
 
 (when (not package-archive-contents) (package-refresh-contents))
 (defvar my-packages 
-  '(ac-math autopair ess auctex yasnippet auto-complete tabbar scala-mode2 magit csv-mode)
+  '(ac-math autopair ess auctex yasnippet auto-complete tabbar scala-mode2 magit csv-mode pretty-lambdada)
   "A list of packages to ensure are installed at launch."
 )
 
@@ -52,9 +52,12 @@
 
 ;;;;;;;;;;python ;;;;;;;;;;;;;;;;
 (defconst numpy-root-dir (if (eq system-type 'windows-nt) win-numpy-root-dir gnu-numpy-root-dir))
-
+(require 'pretty-lambdada)
 (add-hook 'python-mode-hook
-  (lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
+  (lambda () 
+    (local-set-key (kbd "RET") 'newline-and-indent)
+    (turn-on-pretty-lambda-mode)
+    ))
 (when (not (string-equal numpy-root-dir ""))
       (unless (package-installed-p 'jedi) (package-refresh-contents) (package-install 'jedi))
 
